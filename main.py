@@ -4,6 +4,7 @@ import logging
 from requests.exceptions import RequestException ,Timeout, HTTPError
 from config import API_TOKEN, API_BASE_URL, API_EMAIL
 from transform import transform_data 
+from save_data import save_data
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,9 +73,11 @@ def main():
         logger.error("no hay datos transformados . abortando pipeline")
         return
     logger.info(f"transformacion exitosa")
+    save_data(df)
 
     logger.info("pipeline ejecutado correctamente")
-
+    print(df.head())
+    
 
 if __name__ == "__main__":
     main()
