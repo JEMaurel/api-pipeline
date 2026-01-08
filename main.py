@@ -67,16 +67,22 @@ def main():
     logger.info("="*50)
     logger.info("iniciando la recuperacion de datos  paso 6 extraction + retry")
     logger.info("="*50)
-    data = fetch_data_with_retry(rows=1000)
-    df= transform_data(data)
-    if df.empty:
-        logger.error("no hay datos transformados . abortando pipeline")
-        return
-    logger.info(f"transformacion exitosa")
-    save_data(df)
+    try:
 
-    logger.info("pipeline ejecutado correctamente")
-    print(df.head())
+        data = fetch_data_with_retry(rows=1000)
+        df= transform_data(data)
+        if df.empty:
+            logger.error("no hay datos transformados . abortando pipeline")
+            return
+        logger.info(f"transformacion exitosa")
+        save_data(df)
+        logger.info("="*50)
+        logger.info("pipeline ejecutado correctamente")
+        logger.info("="*50)
+    except Exception as e:
+        logger.error(f" fallo del pipeline en main : {e}") 
+        raise
+        
     
 
 if __name__ == "__main__":
