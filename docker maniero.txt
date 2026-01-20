@@ -1,0 +1,5 @@
+taskkill /F /IM "Docker Desktop.exe"; taskkill /F /IM "com.docker.backend.exe"; taskkill /F /IM "Docker Desktop Service.exe"
+
+
+
+esto mata todo para que abra nuevamente docker desktop cuando esta maniero 

@@ -4,6 +4,8 @@ services:
   api-pipeline:
     build: .
     container_name: api-pipeline-app
+    env_file:
+      - .env
     volumes:
       - ./output:/app/output
     # ports opcionales si tu app expone algún endpoint
