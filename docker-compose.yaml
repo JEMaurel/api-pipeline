@@ -3,7 +3,7 @@ version: '3.9'
 services:
   api-pipeline:
     build: .
-    container_name: api-pipeline-app
+    container_name: api-pipe-docker-app
     env_file:
       - .env
     volumes:
