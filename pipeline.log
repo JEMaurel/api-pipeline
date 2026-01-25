@@ -1,0 +1,61 @@
+time="2026-01-25T01:00:01-03:00" level=warning msg="/home/juanm/api-pipe-docker/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Image api-pipe-docker-api-pipeline Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 546B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 200B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 2.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 83B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 1.07kB done
+#6 DONE 0.0s
+
+#7 [1/5] FROM docker.io/library/python:3.12-slim@sha256:5e2dbd4bbdd9c0e67412aea9463906f74a22c60f89eb7b5bbb7d45b66a2b68a6
+#7 resolve docker.io/library/python:3.12-slim@sha256:5e2dbd4bbdd9c0e67412aea9463906f74a22c60f89eb7b5bbb7d45b66a2b68a6 0.0s done
+#7 DONE 0.0s
+
+#8 [2/5] WORKDIR /app
+#8 CACHED
+
+#9 [3/5] COPY requirements.txt .
+#9 CACHED
+
+#10 [4/5] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [5/5] COPY . .
+#11 DONE 0.1s
+
+#12 exporting to image
+#12 exporting layers 0.1s done
+#12 exporting manifest sha256:ff9ea3f656b58311d2959f74bf1e5ad35db0a0f95ccba1938f2796f49b2f3bce 0.0s done
+#12 exporting config sha256:28dd75a15f68dfeef4c93965c627ea559a55d0089bd03c6e20febed2dcc28073 0.0s done
+#12 exporting attestation manifest sha256:c1912c1813a937290a4f9eab13122fd5301b06dc812ea0258aee62f1073110b2 0.0s done
+#12 exporting manifest list sha256:b190ce14a501d5c098545456b299da0acadb0f92e24bda17513f7045f580b004 0.0s done
+#12 naming to docker.io/library/api-pipe-docker-api-pipeline:latest
+#12 naming to docker.io/library/api-pipe-docker-api-pipeline:latest done
+#12 unpacking to docker.io/library/api-pipe-docker-api-pipeline:latest 0.1s done
+#12 DONE 0.3s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image api-pipe-docker-api-pipeline Built 
+ Container api-pipe-docker-app Recreate 
+ Container api-pipe-docker-app Recreated 
+ Container api-pipe-docker-app Starting 
+ Container api-pipe-docker-app Started 

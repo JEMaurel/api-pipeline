@@ -1,10 +1,14 @@
+
+import os 
+import boto3
+from dotenv import load_dotenv 
 import requests
 import time
 import logging
 from requests.exceptions import RequestException ,Timeout, HTTPError
 from config import API_TOKEN, API_BASE_URL, API_EMAIL
 from transform import transform_data 
-from save_data import save_data
+from save_data import save_data , limpiar_s3_prefix
 
 logging.basicConfig(
     level=logging.INFO,
@@ -63,6 +67,35 @@ def fetch_data_with_retry(
             time.sleep(wait_time)
 
     raise Exception(f"fallo despues de {max_retries} intentos")
+def upload_folder_to_s3(local_dir: str, s3_prefix: str):
+    """Sincroniza la carpeta local con el bucket de S3"""
+    load_dotenv() # Asegura que lee el .env
+    
+    bucket_name = os.getenv('S3_BUCKET_NAME')
+    if not bucket_name:
+        raise ValueError("❌ Error: La variable S3_BUCKET_NAME no está definida en el archivo .env")
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+        region_name=os.getenv('AWS_REGION', 'us-east-1')
+    )
+    limpiar_s3_prefix(s3_client, bucket_name, s3_prefix)
+    logger.info(f"Iniciando subida a S3: bucket={bucket_name}, prefijo={s3_prefix}")
+
+    for root, dirs, files in os.walk(local_dir):
+        for file in files:
+            local_path = os.path.join(root, file)
+            # Crear la ruta de S3 (ej: processed/orders/year=2024/...)
+            relative_path = os.path.relpath(local_path, local_dir)
+            s3_path = os.path.join(s3_prefix, relative_path).replace("\\", "/")
+            
+            try:
+                s3_client.upload_file(local_path, bucket_name, s3_path)
+                logger.info(f"✅ Subido: {s3_path}")
+            except Exception as e:
+                logger.error(f"❌ Error subiendo {file}: {e}")
+
 def main():
     logger.info("="*50)
     logger.info("iniciando la recuperacion de datos  paso 6 extraction + retry")
@@ -76,6 +109,14 @@ def main():
             return
         logger.info(f"transformacion exitosa")
         save_data(df)
+
+        # =============================================
+        # NUEVO: PASO 4 - CARGA A AWS S3
+        # =============================================
+        logger.info("Iniciando fase de carga a la nube...")
+        upload_folder_to_s3('output', 'processed')
+        # =============================================
+
         logger.info("="*50)
         logger.info("pipeline ejecutado correctamente")
         logger.info("="*50)
